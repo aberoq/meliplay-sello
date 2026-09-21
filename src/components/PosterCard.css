@@ -5,7 +5,7 @@
   aspect-ratio: 2 / 3;
   padding: 0;
   border: none;
-  border-radius: 9px;
+  border-radius: var(--radius-poster);
   overflow: hidden;
   background: var(--surface);
   color: inherit;
@@ -19,7 +19,6 @@ button.poster-card {
 
 .poster-card--hero {
   width: 260px;
-  border-radius: 10px;
 }
 
 .poster-card--med {
@@ -28,7 +27,6 @@ button.poster-card {
 
 .poster-card--small {
   width: 114px;
-  border-radius: var(--radius-6);
 }
 
 .poster-card__img {
@@ -67,7 +65,6 @@ button.poster-card {
   max-width: calc(100% - 16px);
 }
 
-.poster-card--med .poster-card__progress ~ .poster-card__chip,
 .poster-card--med:has(.poster-card__progress) .poster-card__chip {
   bottom: 16px;
 }

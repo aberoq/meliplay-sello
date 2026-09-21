@@ -43,7 +43,7 @@ export const movies: Record<string, Movie> = {
     id: 'ice-age',
     title: 'La Era de Hielo',
     poster: '/assets/movie-posters/movie-poster-med_03.png',
-    heroPoster: '/assets/movie-posters/hero-movie_02.png',
+    heroPoster: '/assets/movie-posters/hero-movie-without-chip.png',
   },
   rookie: {
     id: 'rookie',
@@ -99,6 +99,18 @@ export const recommendedRail: RailItem[] = [
     badge: 'NUEVA',
   },
 ]
+
+export const top10Posters: string[] = Array.from(
+  { length: 9 },
+  (_, i) =>
+    `/assets/movie-posters/movie-poster-small_${String(i + 1).padStart(2, '0')}.png`,
+)
+
+export const couldLikePosters: string[] = Array.from(
+  { length: 7 },
+  (_, i) =>
+    `/assets/movie-posters/movie-poster-med_${String(i + 1).padStart(2, '0')}.png`,
+)
 
 export const initialDemo: DemoState = {
   movie: movies.iceAge,
