@@ -1,5 +1,5 @@
-import { LayoutGroup, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useMemo, useRef } from 'react'
 import { HomeHeader } from '../components/HomeHeader'
 import { PosterCard } from '../components/PosterCard'
 import { ProvenanceChip } from '../components/ProvenanceChip'
@@ -13,10 +13,12 @@ import {
   type Provenance,
   type RailItem,
 } from '../data/demo'
+import { loopCopies, useInfiniteRail } from '../hooks/useInfiniteRail'
 import { useScrollDirection } from '../hooks/useScrollDirection'
 import './HomeScreen.css'
 
 const HOME_NAV_SHOW_HEIGHT = 96
+const HERO_CENTER_INDEX = 1
 
 type HomeScreenProps = {
   recommended: RailItem[]
@@ -41,9 +43,18 @@ export function HomeScreen({
   const bodyRef = useRef<HTMLDivElement>(null)
   const railRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
+  const heroTrackRef = useRef<HTMLDivElement>(null)
   const { hidden: chipsHidden, onScroll } = useScrollDirection({
     threshold: 12,
     headerHeight: HOME_NAV_SHOW_HEIGHT,
+  })
+
+  const heroLoops = useMemo(() => loopCopies(heroCarousel), [])
+
+  useInfiniteRail(heroTrackRef, {
+    startIndex: HERO_CENTER_INDEX,
+    align: 'center',
+    deps: [heroLoops.length],
   })
 
   useEffect(() => {
@@ -82,20 +93,23 @@ export function HomeScreen({
         onScroll={onScroll}
       >
         <section className="home-hero" aria-label="Destacados">
-          <div className="home-hero__track">
-            {heroCarousel.map((movie, index) => {
-              const isCenter = index === 1
+          <div className="home-hero__track" ref={heroTrackRef}>
+            {heroLoops.map(({ item: movie, copy, key }, indexInAll) => {
+              const indexInSet = indexInAll % heroCarousel.length
+              const isCenter = indexInSet === HERO_CENTER_INDEX
               const provenance: Provenance | undefined = isCenter
                 ? { person: people.lupe, attachment: 'comment' }
                 : undefined
               return (
                 <PosterCard
-                  key={movie.id}
+                  key={key}
                   size="hero"
                   src={movie.heroPoster ?? movie.poster}
                   alt={movie.title}
                   className={
-                    isCenter ? 'home-hero__card is-center' : 'home-hero__card'
+                    isCenter && copy === 1
+                      ? 'home-hero__card is-center'
+                      : 'home-hero__card'
                   }
                   provenance={provenance}
                   onClick={() => open(movie.id, provenance)}
@@ -111,65 +125,56 @@ export function HomeScreen({
           ref={railRef}
         >
           <h2 className="section home-rail__title">Te recomendaron</h2>
-          <LayoutGroup>
-            <div className="home-rail__track" ref={trackRef}>
-              {recommended.map((item) => {
-                const isNew = item.movie.id === newCardId
-                return (
-                  <motion.div
-                    key={item.movie.id}
-                    layout={!reduce}
-                    className="home-rail__item"
-                    initial={
-                      isNew
-                        ? reduce
-                          ? { opacity: 0 }
-                          : { opacity: 0, scale: 0.9 }
-                        : false
+          <div className="home-rail__track" ref={trackRef}>
+            {recommended.map((item) => {
+              const isNew = item.movie.id === newCardId
+              return (
+                <motion.div
+                  key={item.movie.id}
+                  className="home-rail__item"
+                  initial={isNew ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: reduce ? 0.2 : 0.35 }}
+                  onAnimationComplete={() => {
+                    if (isNew) onNewCardSettled?.()
+                  }}
+                >
+                  <PosterCard
+                    size="med"
+                    src={item.movie.poster}
+                    alt={item.movie.title}
+                    badge={item.badge}
+                    progress={item.progress}
+                    onClick={() =>
+                      open(item.movie.id, item.provenance)
                     }
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: reduce ? 0.2 : 0.35 }}
-                    onAnimationComplete={() => {
-                      if (isNew) onNewCardSettled?.()
-                    }}
-                  >
-                    <PosterCard
-                      size="med"
-                      src={item.movie.poster}
-                      alt={item.movie.title}
-                      badge={item.badge}
-                      progress={item.progress}
-                      onClick={() =>
-                        open(item.movie.id, item.provenance)
+                  />
+                  {item.provenance && (
+                    <motion.span
+                      className="home-rail__chip"
+                      initial={
+                        isNew
+                          ? reduce
+                            ? { opacity: 0 }
+                            : { opacity: 0, y: 6 }
+                          : false
                       }
-                    />
-                    {item.provenance && (
-                      <motion.span
-                        className="home-rail__chip"
-                        initial={
-                          isNew
-                            ? reduce
-                              ? { opacity: 0 }
-                              : { opacity: 0, y: 6 }
-                            : false
-                        }
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          delay: isNew && !reduce ? 0.2 : 0,
-                          duration: 0.25,
-                        }}
-                      >
-                        <ProvenanceChip
-                          person={item.provenance.person}
-                          attachment={item.provenance.attachment}
-                        />
-                      </motion.span>
-                    )}
-                  </motion.div>
-                )
-              })}
-            </div>
-          </LayoutGroup>
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        delay: isNew && !reduce ? 0.2 : 0,
+                        duration: 0.25,
+                      }}
+                    >
+                      <ProvenanceChip
+                        person={item.provenance.person}
+                        attachment={item.provenance.attachment}
+                      />
+                    </motion.span>
+                  )}
+                </motion.div>
+              )
+            })}
+          </div>
         </section>
 
         <section className="home-rail" aria-label="Top 10 en México">

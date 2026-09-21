@@ -46,21 +46,6 @@
   filter: blur(var(--orb-blur, 5px));
 }
 
-.orb-blob__seam {
-  position: absolute;
-  left: 8%;
-  right: 18%;
-  bottom: 32%;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(232, 160, 64, 0.5);
-  box-shadow: 0 0 4px rgba(232, 160, 64, 0.35);
-  filter: blur(1.2px);
-  transform: rotate(-12deg) scaleX(1.05);
-  pointer-events: none;
-  z-index: 2;
-}
-
 .orb-blob--blue {
   width: 60%;
   height: 60%;

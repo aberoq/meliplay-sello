@@ -8,36 +8,36 @@ type OrbProps = {
   className?: string
 }
 
-/** Layer order (bottom → top): blue, green, yellow. Durations/easing unchanged. */
+/** Layer order (bottom → top): blue, green, yellow. */
 function blobMotion(size: number) {
   const p = (n: number) => size * n
   return [
     {
       className: 'orb-blob orb-blob--blue',
       color: '#2F80F5',
-      duration: 11,
-      x: [p(-0.08), p(-0.15), p(-0.04), p(-0.1)],
-      y: [p(0.12), p(0.18), p(0.08), p(0.14)],
-      scale: [1, 1.1, 0.88, 1.05],
-      seam: false,
+      duration: 5,
+      x: [p(-0.12), p(-0.25), p(-0.05), p(-0.2), p(-0.12)],
+      y: [p(0.1), p(0.25), p(0.05), p(0.18), p(0.1)],
+      scale: [1, 1.12, 0.9, 1.08, 1],
+      rotate: [0, 25, -15, 0],
     },
     {
       className: 'orb-blob orb-blob--green',
       color: '#9AAA1A',
-      duration: 9,
-      x: [p(0.08), p(0.16), p(0.02), p(0.12)],
-      y: [p(-0.02), p(0.1), p(-0.12), p(0.04)],
-      scale: [1, 0.9, 1.18, 1],
-      seam: false,
+      duration: 6.5,
+      x: [p(0.1), p(0.25), p(0.02), p(0.18), p(0.1)],
+      y: [p(-0.05), p(0.15), p(-0.25), p(0.08), p(-0.05)],
+      scale: [1, 0.9, 1.12, 0.95, 1],
+      rotate: [0, 25, -15, 0],
     },
     {
       className: 'orb-blob orb-blob--yellow',
       color: '#F2E36B',
-      duration: 7,
-      x: [0, p(0.1), p(-0.08), 0],
-      y: [p(-0.1), p(-0.14), p(-0.04), p(-0.1)],
-      scale: [1, 1.15, 0.92, 1],
-      seam: true,
+      duration: 8,
+      x: [0, p(0.2), p(-0.25), p(0.12), 0],
+      y: [p(-0.12), p(-0.25), p(-0.02), p(-0.18), p(-0.12)],
+      scale: [1, 1.1, 0.9, 1.12, 1],
+      rotate: [0, 25, -15, 0],
     },
   ] as const
 }
@@ -71,9 +71,17 @@ export function Orb({
             : { duration: breathDuration, repeat: Infinity, ease: 'easeInOut' }
         }
       >
-        <span
+        <motion.span
           className="orb-inner__liquid"
           style={{ ['--orb-blur' as string]: `${blur}px` }}
+          animate={
+            reduce || mode !== 'thinking' ? { rotate: 0 } : { rotate: 360 }
+          }
+          transition={
+            reduce || mode !== 'thinking'
+              ? { duration: 0.2 }
+              : { duration: 6, repeat: Infinity, ease: 'linear' }
+          }
         >
           {blobs.map((blob) => (
             <motion.span
@@ -86,6 +94,7 @@ export function Orb({
                       x: [...blob.x],
                       y: [...blob.y],
                       scale: [...blob.scale],
+                      rotate: [...blob.rotate],
                     }
               }
               transition={
@@ -105,12 +114,9 @@ export function Orb({
                   background: `radial-gradient(circle, ${blob.color} 0%, transparent 70%)`,
                 }}
               />
-              {blob.seam && (
-                <span className="orb-blob__seam" aria-hidden />
-              )}
             </motion.span>
           ))}
-        </span>
+        </motion.span>
         <span className="orb-inner__glass" aria-hidden />
         {mode === 'thinking' && !reduce && (
           <>
