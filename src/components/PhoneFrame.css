@@ -10,7 +10,7 @@
 .phone-frame {
   position: relative;
   width: var(--phone-w);
-  height: var(--phone-h);
+  height: min(var(--phone-h), calc(100dvh - 32px));
   border-radius: var(--phone-radius);
   overflow: hidden;
   background: var(--bg);

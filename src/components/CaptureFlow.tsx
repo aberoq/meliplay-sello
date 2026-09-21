@@ -33,6 +33,7 @@ type CaptureFlowProps = {
   onClose: () => void
   onSubmit: () => void
   onSave: () => void
+  onRetry: () => void
 }
 
 function ThinkingPhrases({ reduce }: { reduce: boolean | null }) {
@@ -75,6 +76,7 @@ export function CaptureFlow({
   onClose,
   onSubmit,
   onSave,
+  onRetry,
 }: CaptureFlowProps) {
   const reduce = useReducedMotion()
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -88,7 +90,13 @@ export function CaptureFlow({
 
   useEffect(() => {
     if (phase === 'open' || phase === 'typing') {
-      const t = window.setTimeout(() => inputRef.current?.focus(), 280)
+      const t = window.setTimeout(() => {
+        const el = inputRef.current
+        if (!el) return
+        el.focus()
+        const len = el.value.length
+        el.setSelectionRange(len, len)
+      }, 280)
       return () => window.clearTimeout(t)
     }
   }, [phase])
@@ -138,7 +146,7 @@ export function CaptureFlow({
           <motion.button
             type="button"
             key="scrim"
-            className="capture-scrim"
+            className={`capture-scrim${phase === 'thinking' ? ' is-thinking' : ''}`}
             aria-label="Cerrar"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -243,7 +251,6 @@ export function CaptureFlow({
           layoutId="capture-shell"
           transition={fade}
         >
-          <p className="capture-thinking__query meta">{query}</p>
           <div className="capture-thinking__stage">
             <Orb layoutId="orb" size={96} mode="thinking" />
             <ThinkingPhrases reduce={reduce} />
@@ -382,12 +389,16 @@ export function CaptureFlow({
                       onSelectPerson(selected ? null : person)
                     }
                   >
-                    <Avatar
-                      size={48}
-                      initials={person.initials}
-                      color={person.color}
-                      selected={selected}
-                    />
+                    <span
+                      className={`capture-avatar-wrap${selected ? ' is-selected' : ''}`}
+                    >
+                      <span className="capture-avatar-ring" aria-hidden />
+                      <Avatar
+                        size={48}
+                        initials={person.initials}
+                        color={person.color}
+                      />
+                    </span>
                     <span className="caption">{person.name}</span>
                   </button>
                 )
@@ -401,8 +412,15 @@ export function CaptureFlow({
                   onSelectPerson(selectedPerson === 'otro' ? null : 'otro')
                 }
               >
-                <span className="capture-person__otro-avatar" aria-hidden>
-                  +
+                <span
+                  className={`capture-avatar-wrap${
+                    selectedPerson === 'otro' ? ' is-selected' : ''
+                  }`}
+                >
+                  <span className="capture-avatar-ring" aria-hidden />
+                  <span className="capture-person__otro-avatar" aria-hidden>
+                    +
+                  </span>
                 </span>
                 <span className="caption">Otro</span>
               </button>
@@ -414,7 +432,11 @@ export function CaptureFlow({
             >
               Guardar
             </button>
-            <button type="button" className="capture-result__secondary label">
+            <button
+              type="button"
+              className="capture-result__secondary label"
+              onClick={onRetry}
+            >
               No es esta, buscar otra
             </button>
           </div>
