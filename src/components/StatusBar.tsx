@@ -1,6 +1,29 @@
+import { useEffect, useState } from 'react'
 import './StatusBar.css'
 
+function useDesktopFrame() {
+  const [desktop, setDesktop] = useState(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(min-width: 500px)').matches
+      : true,
+  )
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 500px)')
+    const onChange = () => setDesktop(mq.matches)
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  return desktop
+}
+
+/** Fake iOS status bar — only inside the desktop phone frame (>500px). */
 export function StatusBar() {
+  const desktop = useDesktopFrame()
+  if (!desktop) return null
+
   return (
     <div className="status-bar" aria-hidden>
       <span className="status-bar__time">9:41</span>

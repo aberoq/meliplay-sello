@@ -121,6 +121,7 @@ export function CaptureFlow({
     : { type: 'spring' as const, stiffness: 380, damping: 32 }
 
   return (
+    <div className="capture-layer">
     <LayoutGroup id="capture-flow">
       {showFab && (
         <motion.button
@@ -443,5 +444,6 @@ export function CaptureFlow({
         </motion.div>
       )}
     </LayoutGroup>
+    </div>
   )
 }

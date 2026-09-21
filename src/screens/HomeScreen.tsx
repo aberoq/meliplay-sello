@@ -5,10 +5,12 @@ import { PosterCard } from '../components/PosterCard'
 import { ProvenanceChip } from '../components/ProvenanceChip'
 import { StatusBar } from '../components/StatusBar'
 import {
-  couldLikePosters,
+  couldLikeMovies,
   heroCarousel,
   people,
-  top10Posters,
+  top10Movies,
+  type FichaTarget,
+  type Provenance,
   type RailItem,
 } from '../data/demo'
 import { useScrollDirection } from '../hooks/useScrollDirection'
@@ -23,6 +25,7 @@ type HomeScreenProps = {
   resetToken?: number
   onNewCardSettled?: () => void
   onLogoClick?: () => void
+  onOpenFicha?: (target: FichaTarget) => void
 }
 
 export function HomeScreen({
@@ -32,6 +35,7 @@ export function HomeScreen({
   resetToken = 0,
   onNewCardSettled,
   onLogoClick,
+  onOpenFicha,
 }: HomeScreenProps) {
   const reduce = useReducedMotion()
   const bodyRef = useRef<HTMLDivElement>(null)
@@ -59,6 +63,10 @@ export function HomeScreen({
     if (trackRef.current) trackRef.current.scrollLeft = 0
   }, [resetToken])
 
+  const open = (movieId: string, provenance?: Provenance) => {
+    onOpenFicha?.({ movieId, provenance })
+  }
+
   return (
     <div className="home-screen">
       <div
@@ -77,6 +85,9 @@ export function HomeScreen({
           <div className="home-hero__track">
             {heroCarousel.map((movie, index) => {
               const isCenter = index === 1
+              const provenance: Provenance | undefined = isCenter
+                ? { person: people.lupe, attachment: 'comment' }
+                : undefined
               return (
                 <PosterCard
                   key={movie.id}
@@ -86,11 +97,8 @@ export function HomeScreen({
                   className={
                     isCenter ? 'home-hero__card is-center' : 'home-hero__card'
                   }
-                  provenance={
-                    isCenter
-                      ? { person: people.lupe, attachment: 'comment' }
-                      : undefined
-                  }
+                  provenance={provenance}
+                  onClick={() => open(movie.id, provenance)}
                 />
               )
             })}
@@ -131,6 +139,9 @@ export function HomeScreen({
                       alt={item.movie.title}
                       badge={item.badge}
                       progress={item.progress}
+                      onClick={() =>
+                        open(item.movie.id, item.provenance)
+                      }
                     />
                     {item.provenance && (
                       <motion.span
@@ -164,12 +175,12 @@ export function HomeScreen({
         <section className="home-rail" aria-label="Top 10 en México">
           <h2 className="section home-rail__title">Top 10 en México</h2>
           <div className="home-rail__track home-rail__track--top10">
-            {top10Posters.map((src, index) => {
+            {top10Movies.map((movie, index) => {
               const rank = index + 1
               return (
                 <div
                   className="top10-item"
-                  key={src}
+                  key={movie.id}
                   aria-label={`Puesto ${rank}`}
                 >
                   <img
@@ -181,9 +192,10 @@ export function HomeScreen({
                   />
                   <PosterCard
                     size="small"
-                    src={src}
-                    alt=""
+                    src={movie.poster}
+                    alt={movie.title ?? ''}
                     className="top10-item__poster"
+                    onClick={() => open(movie.id)}
                   />
                 </div>
               )
@@ -194,8 +206,14 @@ export function HomeScreen({
         <section className="home-rail" aria-label="Podrían gustarte">
           <h2 className="section home-rail__title">Podrían gustarte</h2>
           <div className="home-rail__track">
-            {couldLikePosters.map((src) => (
-              <PosterCard key={src} size="med" src={src} alt="" />
+            {couldLikeMovies.map((movie) => (
+              <PosterCard
+                key={movie.id}
+                size="med"
+                src={movie.poster}
+                alt={movie.title ?? ''}
+                onClick={() => open(movie.id)}
+              />
             ))}
           </div>
         </section>
