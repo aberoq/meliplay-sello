@@ -20,18 +20,23 @@ type HomeScreenProps = {
   recommended: RailItem[]
   newCardId: string | null
   scrollToken: number
+  resetToken?: number
   onNewCardSettled?: () => void
+  onLogoClick?: () => void
 }
 
 export function HomeScreen({
   recommended,
   newCardId,
   scrollToken,
+  resetToken = 0,
   onNewCardSettled,
+  onLogoClick,
 }: HomeScreenProps) {
   const reduce = useReducedMotion()
   const bodyRef = useRef<HTMLDivElement>(null)
   const railRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
   const { hidden: chipsHidden, onScroll } = useScrollDirection({
     threshold: 12,
     headerHeight: HOME_NAV_SHOW_HEIGHT,
@@ -39,6 +44,7 @@ export function HomeScreen({
 
   useEffect(() => {
     if (!scrollToken || !bodyRef.current || !railRef.current) return
+    if (trackRef.current) trackRef.current.scrollLeft = 0
     const body = bodyRef.current
     const top = railRef.current.offsetTop - 12
     body.scrollTo({
@@ -47,13 +53,19 @@ export function HomeScreen({
     })
   }, [scrollToken, reduce])
 
+  useEffect(() => {
+    if (!resetToken) return
+    bodyRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+    if (trackRef.current) trackRef.current.scrollLeft = 0
+  }, [resetToken])
+
   return (
     <div className="home-screen">
       <div
         className={`home-screen__chrome${chipsHidden ? ' is-chips-hidden' : ''}`}
       >
         <StatusBar />
-        <HomeHeader chipsHidden={chipsHidden} />
+        <HomeHeader chipsHidden={chipsHidden} onLogoClick={onLogoClick} />
       </div>
 
       <div
@@ -92,7 +104,7 @@ export function HomeScreen({
         >
           <h2 className="section home-rail__title">Te recomendaron</h2>
           <LayoutGroup>
-            <div className="home-rail__track">
+            <div className="home-rail__track" ref={trackRef}>
               {recommended.map((item) => {
                 const isNew = item.movie.id === newCardId
                 return (

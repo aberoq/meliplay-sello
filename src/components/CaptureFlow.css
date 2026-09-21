@@ -32,6 +32,10 @@
   cursor: pointer;
 }
 
+.capture-scrim.is-thinking {
+  background: rgba(0, 0, 0, 0.8);
+}
+
 .capture-sheet {
   position: absolute;
   left: 16px;
@@ -147,16 +151,6 @@
   pointer-events: none;
 }
 
-.capture-thinking__query {
-  position: absolute;
-  top: 120px;
-  left: var(--margin-x);
-  right: var(--margin-x);
-  margin: 0;
-  color: var(--ink-3);
-  text-align: center;
-}
-
 .capture-thinking__stage {
   display: flex;
   flex-direction: column;
@@ -168,6 +162,7 @@
   margin: 0;
   text-align: center;
   min-height: 1.4em;
+  color: #fff;
 }
 
 .capture-result {
@@ -376,16 +371,12 @@
 
 .capture-result__people {
   display: flex;
-  gap: var(--space-12);
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin: 0 calc(var(--margin-x) * -1);
-  padding: 0 var(--margin-x) var(--space-4);
-  scrollbar-width: none;
-}
-
-.capture-result__people::-webkit-scrollbar {
-  display: none;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  overflow: visible;
+  padding: 2px 0 var(--space-4);
+  margin: 0;
 }
 
 .capture-person {
@@ -393,12 +384,38 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  min-width: 56px;
+  flex: 0 0 auto;
+  min-width: 0;
   color: var(--ink-3);
 }
 
 .capture-person.is-selected {
   color: var(--ink);
+}
+
+.capture-avatar-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+}
+
+.capture-avatar-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #3483fa;
+  border-radius: var(--radius-999);
+  opacity: 0;
+  transition: opacity 150ms ease;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.capture-avatar-wrap.is-selected .capture-avatar-ring {
+  opacity: 1;
 }
 
 .capture-person__otro-avatar {
@@ -412,11 +429,7 @@
   font-size: 22px;
   line-height: 1;
   color: var(--ink);
-}
-
-.capture-person--otro.is-selected .capture-person__otro-avatar {
-  box-shadow: 0 0 0 2px var(--link);
-  border-style: solid;
+  background: #252525;
 }
 
 .capture-result__primary {

@@ -19,10 +19,22 @@
   box-sizing: border-box;
 }
 
-.home-header__logo {
+.home-header__logo-btn {
   justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.home-header__logo {
   height: 36px;
   width: auto;
+  pointer-events: none;
 }
 
 .home-header__sticky {

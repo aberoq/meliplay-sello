@@ -9,9 +9,13 @@ const CHIPS = ['Todos', 'Series', 'Películas', 'Infantil'] as const
 type HomeHeaderProps = {
   /** Hides the segmented control + category chips. Logo row stays. */
   chipsHidden?: boolean
+  onLogoClick?: () => void
 }
 
-export function HomeHeader({ chipsHidden = false }: HomeHeaderProps) {
+export function HomeHeader({
+  chipsHidden = false,
+  onLogoClick,
+}: HomeHeaderProps) {
   const [tab, setTab] = useState<(typeof TABS)[number]>('Inicio')
   const [chip, setChip] = useState<(typeof CHIPS)[number]>('Todos')
 
@@ -21,14 +25,21 @@ export function HomeHeader({ chipsHidden = false }: HomeHeaderProps) {
         <Button variant="tertiary" iconOnly aria-label="Atrás">
           <Icon name="chevron-left" size={20} />
         </Button>
-        <img
-          className="home-header__logo"
-          src="/assets/logo/meli-play-logo.svg"
-          alt="mercado play"
-          width={140}
-          height={36}
-          draggable={false}
-        />
+        <button
+          type="button"
+          className="home-header__logo-btn"
+          aria-label="Reiniciar demo"
+          onClick={onLogoClick}
+        >
+          <img
+            className="home-header__logo"
+            src="/assets/logo/meli-play-logo.svg"
+            alt="mercado play"
+            width={140}
+            height={36}
+            draggable={false}
+          />
+        </button>
         <Button variant="tertiary" iconOnly aria-label="Ajustes">
           <Icon name="settings" size={20} />
         </Button>

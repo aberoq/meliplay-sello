@@ -25,11 +25,14 @@ function App() {
   const [rail, setRail] = useState<RailItem[]>(recommendedRail)
   const [newCardId, setNewCardId] = useState<string | null>(null)
   const [scrollToRecommended, setScrollToRecommended] = useState(0)
+  const [resetToken, setResetToken] = useState(0)
   const thinkTimer = useRef<number | null>(null)
+  const insertTimer = useRef<number | null>(null)
 
   useEffect(() => {
     return () => {
       if (thinkTimer.current) window.clearTimeout(thinkTimer.current)
+      if (insertTimer.current) window.clearTimeout(insertTimer.current)
     }
   }, [])
 
@@ -56,6 +59,11 @@ function App() {
     }, 4800)
   }, [query])
 
+  const onRetry = useCallback(() => {
+    if (thinkTimer.current) window.clearTimeout(thinkTimer.current)
+    setPhase('open')
+  }, [])
+
   const onSave = useCallback(() => {
     const person =
       selectedPerson === 'otro' || selectedPerson === null
@@ -68,6 +76,7 @@ function App() {
         ? { person, attachment: 'comment' }
         : undefined,
     }
+    const movieId = item.movie.id
 
     setDemo((d) => ({
       ...d,
@@ -75,16 +84,37 @@ function App() {
       recommendedBy: person,
       attachment: 'comment',
     }))
-    setRail((prev) => [item, ...prev.filter((r) => r.movie.id !== item.movie.id)])
-    setNewCardId(item.movie.id)
+
+    // Remove existing card first (no entrance anim), before returning home.
+    setNewCardId(null)
+    setRail((prev) => prev.filter((r) => r.movie.id !== movieId))
     setPhase('saved')
     setQuery('')
-    setScrollToRecommended((n) => n + 1)
+
+    if (insertTimer.current) window.clearTimeout(insertTimer.current)
+    insertTimer.current = window.setTimeout(() => {
+      setRail((prev) => [item, ...prev.filter((r) => r.movie.id !== movieId)])
+      setNewCardId(movieId)
+      setScrollToRecommended((n) => n + 1)
+    }, 80)
 
     window.setTimeout(() => {
       setPhase('idle')
     }, 500)
   }, [selectedPerson])
+
+  const onReset = useCallback(() => {
+    if (thinkTimer.current) window.clearTimeout(thinkTimer.current)
+    if (insertTimer.current) window.clearTimeout(insertTimer.current)
+    setDemo(initialDemo)
+    setPhase('idle')
+    setQuery('')
+    setSelectedPerson(people.lupe)
+    setRail(recommendedRail)
+    setNewCardId(null)
+    setScrollToRecommended(0)
+    setResetToken((n) => n + 1)
+  }, [])
 
   return (
     <PhoneFrame>
@@ -94,7 +124,9 @@ function App() {
             recommended={rail}
             newCardId={newCardId}
             scrollToken={scrollToRecommended}
+            resetToken={resetToken}
             onNewCardSettled={() => setNewCardId(null)}
+            onLogoClick={onReset}
           />
           <CaptureFlow
             phase={phase}
@@ -106,6 +138,7 @@ function App() {
             onClose={closeCapture}
             onSubmit={onSubmit}
             onSave={onSave}
+            onRetry={onRetry}
           />
         </div>
       </LayoutGroup>

@@ -19,62 +19,88 @@
   border-radius: inherit;
   overflow: hidden;
   isolation: isolate;
-  background: #1a3a5c;
+  background:
+    radial-gradient(
+      ellipse 90% 70% at 50% 8%,
+      #ffffff 0%,
+      #eef0ff 42%,
+      transparent 68%
+    ),
+    linear-gradient(180deg, #eef0ff 0%, #c5d4f5 38%, #2f80f5 100%);
+  filter: saturate(1.15);
 }
 
 .orb-blob {
   position: absolute;
-  width: 70%;
-  height: 70%;
   border-radius: 50%;
-  filter: blur(var(--orb-blur, 8px));
+  opacity: 1;
   will-change: transform;
   pointer-events: none;
+  mix-blend-mode: normal;
 }
 
-.orb-blob--a {
-  top: -10%;
-  left: -5%;
-}
-
-.orb-blob--b {
-  top: 20%;
-  right: -15%;
-}
-
-.orb-blob--c {
-  bottom: -15%;
-  left: 10%;
-}
-
-.orb-blob--d {
-  top: 15%;
-  left: 20%;
-}
-
-.orb-inner__specular {
-  position: absolute;
-  top: 8%;
-  left: 12%;
-  width: 42%;
-  height: 36%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
-  pointer-events: none;
-  z-index: 2;
-}
-
-.orb-inner__shade {
+.orb-blob__fill {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset -6px -8px 14px rgba(0, 0, 0, 0.35);
+  filter: blur(var(--orb-blur, 5px));
+}
+
+.orb-blob__seam {
+  position: absolute;
+  left: 8%;
+  right: 18%;
+  bottom: 32%;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(232, 160, 64, 0.5);
+  box-shadow: 0 0 4px rgba(232, 160, 64, 0.35);
+  filter: blur(1.2px);
+  transform: rotate(-12deg) scaleX(1.05);
   pointer-events: none;
   z-index: 2;
+}
+
+.orb-blob--blue {
+  width: 60%;
+  height: 60%;
+  bottom: -8%;
+  left: auto;
+  right: -6%;
+  top: auto;
+  z-index: 1;
+}
+
+.orb-blob--green {
+  width: 65%;
+  height: 65%;
+  top: auto;
+  bottom: -4%;
+  left: -8%;
+  right: auto;
+  z-index: 2;
+}
+
+.orb-blob--yellow {
+  width: 90%;
+  height: 90%;
+  top: auto;
+  bottom: -2%;
+  left: -14%;
+  right: auto;
+  z-index: 3;
+}
+
+.orb-inner__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 0 18px rgba(255, 255, 255, 0.6),
+    inset -5px -7px 14px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 4;
 }
 
 .orb-inner__ring {
