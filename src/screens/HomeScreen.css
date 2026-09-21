@@ -63,12 +63,17 @@
 .home-hero__track {
   display: flex;
   align-items: stretch;
-  justify-content: center;
   gap: var(--gutter);
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  padding-inline: max(16px, calc((100% - 262px) / 2));
+  box-sizing: border-box;
   scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 16px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .home-hero__track::-webkit-scrollbar {
@@ -78,6 +83,7 @@
 .home-hero__card {
   width: 262px;
   flex-shrink: 0;
+  scroll-snap-align: center;
 }
 
 .home-hero__card.is-center {
@@ -117,15 +123,38 @@ button.home-hero__card {
   overflow-y: hidden;
   padding: 0 var(--margin-x);
   scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 16px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .home-rail__track::-webkit-scrollbar {
   display: none;
 }
 
+.home-rail__track > * {
+  scroll-snap-align: start;
+}
+
 .home-rail__item {
   position: relative;
   flex-shrink: 0;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  /* No size/radius — PosterCard owns 154×231 + --radius-poster */
+}
+
+.home-rail__item .poster-card--med {
+  width: 154px;
+  height: 231px;
+  border-radius: var(--radius-poster);
 }
 
 .home-rail__chip {
@@ -155,6 +184,7 @@ button.home-hero__card {
   flex-shrink: 0;
   align-items: flex-end;
   height: var(--top10-poster-h);
+  scroll-snap-align: start;
 }
 
 .top10-item__rank {
