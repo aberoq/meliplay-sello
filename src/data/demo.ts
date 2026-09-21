@@ -36,7 +36,39 @@ export const people: Record<string, Person> = {
     initials: 'LP',
     color: 'terracota',
   },
+  mario: {
+    id: 'mario',
+    name: 'Mario',
+    initials: 'MR',
+    color: 'ocre',
+  },
+  rob: {
+    id: 'rob',
+    name: 'Rob',
+    initials: 'RG',
+    color: 'oliva',
+  },
+  ana: {
+    id: 'ana',
+    name: 'Ana',
+    initials: 'AN',
+    color: 'azul',
+  },
+  oscar: {
+    id: 'oscar',
+    name: 'Oscar',
+    initials: 'OJ',
+    color: 'azul',
+  },
 }
+
+export const captureCircle: Person[] = [
+  people.lupe,
+  people.mario,
+  people.rob,
+  people.ana,
+  people.oscar,
+]
 
 export const movies: Record<string, Movie> = {
   iceAge: {
@@ -66,6 +98,11 @@ export const movies: Record<string, Movie> = {
     id: 'troy',
     title: 'Troya',
     poster: '/assets/movie-posters/movie-poster-med_09.png',
+  },
+  xxl: {
+    id: 'xxl',
+    title: 'XXL',
+    poster: '/assets/movie-posters/movie-poster-xxl.png',
   },
 }
 
@@ -111,6 +148,31 @@ export const couldLikePosters: string[] = Array.from(
   (_, i) =>
     `/assets/movie-posters/movie-poster-med_${String(i + 1).padStart(2, '0')}.png`,
 )
+
+export const captureResult = {
+  movie: movies.xxl,
+  meta: 'A · Familia · 1 h 17 · 2024',
+  badge: 'Gratis en Mercado Play',
+  querySample: 'La de dos hermanos que van de viaje a Helsinki.',
+  matchLine: {
+    before: 'Coincide con ',
+    words: ['hermanos', 'viaje', 'Helsinki'] as const,
+  },
+  synopsis: 'Un viaje por las calles de Helsinki, lleno de humor y atmó...',
+  altPosters: [
+    '/assets/movie-posters/movie-poster-med_06.png',
+    '/assets/movie-posters/movie-poster-med_05.png',
+    '/assets/movie-posters/movie-poster-med_01.png',
+  ],
+}
+
+export type CapturePhase =
+  | 'idle'
+  | 'open'
+  | 'typing'
+  | 'thinking'
+  | 'result'
+  | 'saved'
 
 export const initialDemo: DemoState = {
   movie: movies.iceAge,

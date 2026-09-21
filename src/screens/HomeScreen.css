@@ -28,7 +28,6 @@
   background: rgba(26, 26, 26, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  /* Full height always; clip bottom when chips hide — no empty fringe */
   clip-path: inset(0 0 0 0);
   transition: clip-path 250ms ease;
 }
@@ -110,6 +109,20 @@
   display: none;
 }
 
+.home-rail__item {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.home-rail__chip {
+  position: absolute;
+  left: var(--space-8);
+  bottom: var(--space-12);
+  z-index: 2;
+  max-width: calc(100% - 16px);
+  pointer-events: none;
+}
+
 .home-rail__track--top10 {
   --top10-rail-pad-y: 0px;
   gap: var(--space-12);
@@ -147,43 +160,7 @@
   position: relative;
   z-index: 1;
   flex-shrink: 0;
-  /* Kill card shadow vertical bleed that could force rail scroll */
   box-shadow: none;
-}
-
-.home-fab {
-  position: absolute;
-  right: var(--margin-x);
-  bottom: 28px;
-  z-index: 40;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: var(--home-fab-height);
-  padding: 6px 18px 6px 6px;
-  border-radius: var(--radius-999);
-  background: rgba(20, 20, 20, 0.92);
-  color: var(--ink);
-  box-shadow: var(--shadow-flotante);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.home-fab__orb {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-999);
-  background:
-    radial-gradient(circle at 32% 28%, #ffffff 0%, transparent 28%),
-    radial-gradient(circle at 70% 30%, #ffe600 0%, transparent 42%),
-    radial-gradient(circle at 30% 70%, #00a650 0%, transparent 45%),
-    radial-gradient(circle at 75% 75%, #3483fa 0%, #5b7db1 55%, #1a1a1a 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
-}
-
-.home-fab__label {
-  font-weight: 600;
-  padding-right: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
