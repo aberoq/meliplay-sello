@@ -6,6 +6,7 @@
   height: 44px;
   padding: 12px var(--margin-x) 0;
   color: var(--ink);
+  background: var(--bg);
 }
 
 .status-bar__time {
