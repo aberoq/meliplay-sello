@@ -1,0 +1,248 @@
+{
+  "global": {
+    "color": {
+      "bg": {
+        "value": "#1A1A1A",
+        "type": "color"
+      },
+      "surface": {
+        "value": "#313131",
+        "type": "color"
+      },
+      "ink": {
+        "value": "#FFFFFF",
+        "type": "color"
+      },
+      "ink-2": {
+        "value": "#F1F1F1",
+        "type": "color"
+      },
+      "ink-3": {
+        "value": "#BABABA",
+        "type": "color"
+      },
+      "brand": {
+        "value": "#FFE600",
+        "type": "color"
+      },
+      "link": {
+        "value": "#3483FA",
+        "type": "color"
+      },
+      "success": {
+        "value": "#00A650",
+        "type": "color"
+      },
+      "scrim-25": {
+        "value": "rgba(0,0,0,0.25)",
+        "type": "color"
+      },
+      "veil-20": {
+        "value": "rgba(255,255,255,0.20)",
+        "type": "color"
+      }
+    },
+    "person": {
+      "terracota": {
+        "value": "#C96A4B",
+        "type": "color"
+      },
+      "oliva": {
+        "value": "#6B8F71",
+        "type": "color"
+      },
+      "azul-lavado": {
+        "value": "#5B7DB1",
+        "type": "color"
+      },
+      "ocre": {
+        "value": "#B58A3C",
+        "type": "color"
+      }
+    },
+    "radius": {
+      "xs": {
+        "value": "2",
+        "type": "borderRadius"
+      },
+      "sm": {
+        "value": "4",
+        "type": "borderRadius"
+      },
+      "md": {
+        "value": "6",
+        "type": "borderRadius"
+      },
+      "pill": {
+        "value": "999",
+        "type": "borderRadius"
+      }
+    },
+    "space": {
+      "1": {
+        "value": "4",
+        "type": "spacing"
+      },
+      "2": {
+        "value": "8",
+        "type": "spacing"
+      },
+      "3": {
+        "value": "12",
+        "type": "spacing"
+      },
+      "4": {
+        "value": "16",
+        "type": "spacing"
+      },
+      "5": {
+        "value": "24",
+        "type": "spacing"
+      },
+      "6": {
+        "value": "32",
+        "type": "spacing"
+      }
+    },
+    "fontFamilies": {
+      "ui": {
+        "value": "Montserrat",
+        "type": "fontFamilies",
+        "description": "Sustituto libre de Proxima Nova"
+      },
+      "person": {
+        "value": "Fraunces",
+        "type": "fontFamilies"
+      }
+    },
+    "fontWeights": {
+      "regular": {
+        "value": "400",
+        "type": "fontWeights"
+      },
+      "semi": {
+        "value": "600",
+        "type": "fontWeights"
+      }
+    },
+    "fontSizes": {
+      "12": {
+        "value": "12",
+        "type": "fontSizes"
+      },
+      "13": {
+        "value": "13",
+        "type": "fontSizes"
+      },
+      "14": {
+        "value": "14",
+        "type": "fontSizes"
+      },
+      "16": {
+        "value": "16",
+        "type": "fontSizes"
+      },
+      "20": {
+        "value": "20",
+        "type": "fontSizes"
+      },
+      "24": {
+        "value": "24",
+        "type": "fontSizes"
+      },
+      "32": {
+        "value": "32",
+        "type": "fontSizes"
+      }
+    },
+    "typography": {
+      "title": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.semi}",
+          "fontSize": "{fontSizes.32}",
+          "lineHeight": "120%"
+        },
+        "type": "typography"
+      },
+      "section": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.semi}",
+          "fontSize": "{fontSizes.24}",
+          "lineHeight": "130%"
+        },
+        "type": "typography"
+      },
+      "subtitle": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{fontSizes.20}",
+          "lineHeight": "130%"
+        },
+        "type": "typography"
+      },
+      "body": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{fontSizes.16}",
+          "lineHeight": "140%"
+        },
+        "type": "typography"
+      },
+      "label": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.semi}",
+          "fontSize": "{fontSizes.16}",
+          "lineHeight": "140%"
+        },
+        "type": "typography"
+      },
+      "ui": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{fontSizes.14}",
+          "lineHeight": "140%"
+        },
+        "type": "typography"
+      },
+      "meta": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{fontSizes.13}",
+          "lineHeight": "140%"
+        },
+        "type": "typography"
+      },
+      "caption": {
+        "value": {
+          "fontFamily": "{fontFamilies.ui}",
+          "fontWeight": "{fontWeights.semi}",
+          "fontSize": "{fontSizes.12}",
+          "lineHeight": "140%"
+        },
+        "type": "typography"
+      },
+      "persona": {
+        "value": {
+          "fontFamily": "{fontFamilies.person}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{fontSizes.20}",
+          "lineHeight": "130%"
+        },
+        "type": "typography"
+      }
+    }
+  },
+  "$themes": [],
+  "$metadata": {
+    "tokenSetOrder": [
+      "global"
+    ]
+  }
+}
