@@ -1,3 +1,13 @@
+import {
+  couldLikeMovies,
+  getMovie,
+  getSimilarForMovie,
+  isRichFicha,
+  movieCatalog,
+  movieMetaParts,
+  top10Movies,
+} from './movies'
+
 export type PersonaColor = 'terracota' | 'oliva' | 'azul' | 'ocre'
 
 export type AttachmentKind = 'none' | 'comment' | 'voice'
@@ -10,6 +20,7 @@ export type Person = {
   photo?: string
 }
 
+/** Kept for CaptureFlow compatibility */
 export type Movie = {
   id: string
   title: string
@@ -73,36 +84,36 @@ export const captureCircle: Person[] = [
 export const movies: Record<string, Movie> = {
   iceAge: {
     id: 'ice-age',
-    title: 'La Era de Hielo',
-    poster: '/assets/movie-posters/movie-poster-med_03.png',
-    heroPoster: '/assets/movie-posters/hero-movie-without-chip.png',
+    title: movieCatalog['ice-age'].title ?? 'La Era de Hielo',
+    poster: movieCatalog['ice-age'].poster,
+    heroPoster: movieCatalog['ice-age'].heroPoster,
   },
   rookie: {
     id: 'rookie',
-    title: 'The Rookie',
-    poster: '/assets/movie-posters/hero-movie_03.png',
-    heroPoster: '/assets/movie-posters/hero-movie_03.png',
+    title: movieCatalog.rookie.title ?? 'The Rookie',
+    poster: movieCatalog.rookie.poster,
+    heroPoster: movieCatalog.rookie.heroPoster,
   },
   supergirl: {
     id: 'supergirl',
-    title: 'Supergirl',
-    poster: '/assets/movie-posters/movie-poster-med_07.png',
-    heroPoster: '/assets/movie-posters/hero-movie_01.png',
+    title: movieCatalog.supergirl.title ?? 'Supergirl',
+    poster: movieCatalog.supergirl.poster,
+    heroPoster: movieCatalog.supergirl.heroPoster,
   },
   interstellar: {
     id: 'interstellar',
-    title: 'Interstellar',
-    poster: '/assets/movie-posters/movie-poster-med_08.png',
+    title: movieCatalog.interstellar.title ?? 'Interstellar',
+    poster: movieCatalog.interstellar.poster,
   },
   troy: {
     id: 'troy',
-    title: 'Troya',
-    poster: '/assets/movie-posters/movie-poster-med_09.png',
+    title: movieCatalog.troy.title ?? 'Troya',
+    poster: movieCatalog.troy.poster,
   },
   xxl: {
     id: 'xxl',
-    title: 'XXL',
-    poster: '/assets/movie-posters/movie-poster-xxl.png',
+    title: movieCatalog.xxl.title ?? 'XXL',
+    poster: movieCatalog.xxl.poster,
   },
 }
 
@@ -121,33 +132,54 @@ export type RailItem = {
 
 export const recommendedRail: RailItem[] = [
   {
-    movie: movies.interstellar,
+    movie: movies.iceAge,
     provenance: { person: people.lupe, attachment: 'comment' },
+  },
+  {
+    movie: movies.interstellar,
+    provenance: { person: people.mario, attachment: 'comment' },
     progress: 0.38,
   },
   {
     movie: movies.rookie,
-    provenance: { person: people.lupe, attachment: 'comment' },
+    provenance: { person: people.ana, attachment: 'comment' },
     badge: 'ÚLTIMOS DÍAS',
   },
   {
     movie: movies.troy,
-    provenance: { person: people.lupe, attachment: 'comment' },
+    provenance: { person: people.oscar, attachment: 'comment' },
     badge: 'NUEVA',
   },
 ]
 
-export const top10Posters: string[] = Array.from(
-  { length: 9 },
-  (_, i) =>
-    `/assets/movie-posters/movie-poster-small_${String(i + 1).padStart(2, '0')}.png`,
-)
+export type MandarPhase = 'idle' | 'ficha' | 'share'
 
-export const couldLikePosters: string[] = Array.from(
-  { length: 7 },
-  (_, i) =>
-    `/assets/movie-posters/movie-poster-med_${String(i + 1).padStart(2, '0')}.png`,
-)
+export type FichaTarget = {
+  movieId: string
+  provenance?: Provenance
+}
+
+export const shareCircle: Person[] = [
+  people.lupe,
+  people.mario,
+  people.rob,
+  people.ana,
+  people.oscar,
+]
+
+export {
+  couldLikeMovies,
+  getMovie,
+  getSimilarForMovie,
+  isRichFicha,
+  movieCatalog,
+  movieMetaParts,
+  top10Movies,
+}
+
+export const top10Posters: string[] = top10Movies.map((m) => m.poster)
+
+export const couldLikePosters: string[] = couldLikeMovies.map((m) => m.poster)
 
 export const captureResult = {
   movie: movies.xxl,
@@ -158,7 +190,7 @@ export const captureResult = {
     before: 'Coincide con ',
     words: ['hermanos', 'viaje', 'Helsinki'] as const,
   },
-  synopsis: 'Un viaje por las calles de Helsinki, lleno de humor y atmó...',
+  synopsis: getMovie('xxl').synopsis ?? '',
   altPosters: [
     '/assets/movie-posters/movie-poster-med_06.png',
     '/assets/movie-posters/movie-poster-med_05.png',

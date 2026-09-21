@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
+import { motion } from 'framer-motion'
 import { ProvenanceChip } from './ProvenanceChip'
 import type { AttachmentKind, Person } from '../data/demo'
 import './PosterCard.css'
@@ -17,6 +18,7 @@ type PosterCardProps = {
   onClick?: () => void
   style?: CSSProperties
   children?: ReactNode
+  layoutId?: string
 }
 
 export function PosterCard({
@@ -29,14 +31,28 @@ export function PosterCard({
   className = '',
   onClick,
   style,
+  layoutId,
 }: PosterCardProps) {
   const classes = ['poster-card', `poster-card--${size}`, className]
     .filter(Boolean)
     .join(' ')
 
+  const img = layoutId ? (
+    <motion.img
+      className="poster-card__img"
+      layoutId={layoutId}
+      src={src}
+      alt={alt}
+      draggable={false}
+      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+    />
+  ) : (
+    <img className="poster-card__img" src={src} alt={alt} draggable={false} />
+  )
+
   const content = (
     <>
-      <img className="poster-card__img" src={src} alt={alt} draggable={false} />
+      {img}
 
       {badge && <span className="poster-card__badge caption">{badge}</span>}
 

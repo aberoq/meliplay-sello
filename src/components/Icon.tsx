@@ -1,5 +1,6 @@
 type IconName =
   | 'camera'
+  | 'check'
   | 'chevron-left'
   | 'close'
   | 'comment'
